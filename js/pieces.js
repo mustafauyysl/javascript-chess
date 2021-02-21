@@ -44,6 +44,7 @@ const pieces = [
 const squares = document.querySelectorAll(".square");
 
 const placePiece = (square, piece) => {
+  square.innerHTML = "";
   const pieceTitle = document.createElement("p");
   pieceTitle.textContent = piece.title;
   pieceTitle.style.fontSize = "50px";
