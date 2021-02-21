@@ -25,6 +25,7 @@ const moveBlackPawn = (x) => {
   if (x !== 47 && squares[x + 9].id) {
     makeGreen(squares[x + 9]);
   }
+  selectedPiece = squares[x];
 };
 
 const moveWhitePawn = (x) => {
@@ -32,6 +33,12 @@ const moveWhitePawn = (x) => {
     squares[x - 8].classList.toggle("green");
     squares[x - 16].classList.toggle("green");
   }
+  selectedPiece = squares[x];
+};
+
+const moveRook = (x) => {
+  makeGreen(squares[x + 8]);
+  selectedPiece = squares[x];
 };
 
 for (let i = 0; i < squares.length; i++) {
@@ -43,13 +50,21 @@ for (let i = 0; i < squares.length; i++) {
       clearMove();
     }
 
-    if (squares[i].id === "♟︎") {
-      moveBlackPawn(i);
-      selectedPiece = squares[i];
-    }
-    if (squares[i].id === "♙") {
-      moveWhitePawn(i);
-      selectedPiece = squares[i];
+    switch (squares[i].id) {
+      case "♟︎":
+        moveBlackPawn(i);
+        break;
+
+      case "♙":
+        moveWhitePawn(i);
+        break;
+
+      case "♜":
+        moveRook(i);
+        break;
+
+      default:
+        break;
     }
   });
 }
