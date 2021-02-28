@@ -1,38 +1,62 @@
-const board = document.querySelector(".board");
-const boardLetters = document.querySelector(".letters");
-const boardNumbers = document.querySelector(".numbers");
-let letters = ["a", "b", "c", "d", "e", "f", "g", "h", ""];
-let index = 0;
-let black = false;
-let num = 1;
-let i1;
+const createSquares = () => {
+  let black = false;
+  for (let i = 8; i > 0; i--) {
+    letters.map((item) => {
+      data.push(new Square(1, i, item, "piece", "color"));
+    });
+  }
+  //TODO : Daha iyi bir yöntem bul!!
+  for (let y = 0; y < 64; y++) {
+    data[y].id = y + 1;
+    data[y].color = black ? "#EBECD0" : "#779556";
 
-for (let i = 0; i < 8; i++) {
-  let letter = document.createElement("li");
-  letter.textContent = letters[i];
-  boardLetters.appendChild(letter);
-  let numbers = document.createElement("li");
-  numbers.textContent = num++;
-  boardNumbers.appendChild(numbers);
-}
-
-for (let i = 1; i <= 64; i++) {
-  const square = document.createElement("div");
-  if (black) {
-    square.classList.add("square");
-    square.classList.add("black");
-    index++;
+    const piece = pieces.find((piece) =>
+      piece.startLocations.includes(data[y].name)
+    );
+    if (piece) {
+      data[y].piece = piece;
+      let color = data[y].number > 5 ? "white" : "black";
+      data[y].piece = { ...data[y].piece, color };
+    }
     black = !black;
-  } else {
-    square.classList.add("square");
-    square.classList.add("white");
-    index++;
-    black = !black;
+    if ((y + 1) % 8 === 0) black = !black;
   }
 
-  board.appendChild(square);
-  if (index === 8) {
-    black = !black;
-    index = 0;
-  }
-}
+  //console.log(data)
+
+  return data;
+};
+
+let squares = createSquares()
+
+const initData = (squareArr) => {
+  squares = []
+  squareArr.forEach(el => (squares.push(el)))
+
+  board.innerHTML = `
+    ${squares
+      .map(
+        (el) => `
+          <div class="square" 
+          square-id="${el.id}"
+          style="background-color:${el.color}">
+           <div style="font-size:20px">${el.id} - ${el.name}</div>
+          </div>`
+      )
+      .join("")}
+  `;
+};
+
+initData(squares);
+
+// ${el.piece.type
+//   ? `<span class="pieceArea" style="color:${el.piece.color}">
+// ${el.piece.type}
+// </span>`
+//   : ""
+// }
+
+{/* <div style="font-size:20px">${el.id} - ${el.name}</div> */}
+//taşların oynama mantıgı
+// ${el.piece ? `<span>${el.piece}</span>` : ''}
+
